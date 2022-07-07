@@ -6,9 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Voting is Ownable {
 
-    uint128 public winningProposalID;
-    uint128 highestVoteCount;
-
     struct Voter {
         bool isRegistered;
         bool hasVoted;
@@ -28,6 +25,9 @@ contract Voting is Ownable {
         VotingSessionEnded,
         VotesTallied
     }
+
+    uint128 public winningProposalID;
+    uint128 highestVoteCount;
 
     WorkflowStatus public workflowStatus;
     Proposal[] proposalsArray;

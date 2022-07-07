@@ -212,7 +212,7 @@ contract('Voting', function (accounts) {
         it('should not add empty proposal', async function () {
             await this.VotingInstance.startProposalsRegistering({from: owner});
             await expectRevert(this.VotingInstance.addProposal(emptyProposalDescription, {from: registeredVoter}),
-                "Vous ne pouvez pas ne rien proposer");
+                "You can not propose an empty proposal");
         });
 
         it('should not add if not by registered voter', async function () {
@@ -247,7 +247,7 @@ contract('Voting', function (accounts) {
 
         it('should not vote if not in the appropriate workflow', async function () {
             await expectRevert(this.VotingInstance.setVote(1, {from: registeredVoter}),
-                "Voting session havent started yet");
+                "Voting session have not started yet");
         });
 
         it('should not vote if you have already voted', async function () {

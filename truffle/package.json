@@ -1,0 +1,26 @@
+{
+  "name": "truffle",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Yves Toiser",
+  "license": "MIT",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "deploy": "truffle deploy",
+    "test": "truffle test",
+    "migrate": "truffle migrate"
+  },
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.0.9",
+    "dotenv": "^16.0.1",
+    "eth-gas-reporter": "^0.2.25"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "@openzeppelin/test-helpers": "latest"
+  }
+}

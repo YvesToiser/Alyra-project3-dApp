@@ -69,8 +69,8 @@ contract Voting is Ownable {
     // ::::::::::::: REGISTRATION ::::::::::::: //
 
     function addVoter(address _addr) external onlyOwner {
-        require(workflowStatus == WorkflowStatus.RegisteringVoters, 'Voters registration is not open yet');
-        require(voters[_addr].isRegistered != true, 'Already registered');
+        require(workflowStatus == WorkflowStatus.RegisteringVoters, "Voters registration is not open yet");
+        require(voters[_addr].isRegistered != true, "Already registered");
 
         voters[_addr].isRegistered = true;
         emit VoterRegistered(_addr);
@@ -79,8 +79,8 @@ contract Voting is Ownable {
     // ::::::::::::: PROPOSAL ::::::::::::: //
 
     function addProposal(string memory _desc) external onlyVoters {
-        require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, 'Proposals are not allowed yet');
-        require(keccak256(abi.encode(_desc)) != keccak256(abi.encode("")), 'You can not propose an empty proposal');
+        require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, "Proposals are not allowed yet");
+        require(keccak256(abi.encode(_desc)) != keccak256(abi.encode("")), "You can not propose an empty proposal");
 
         Proposal memory proposal;
         proposal.description = _desc;
@@ -91,9 +91,9 @@ contract Voting is Ownable {
     // ::::::::::::: VOTE ::::::::::::: //
 
     function setVote(uint128 _id) external onlyVoters {
-        require(workflowStatus == WorkflowStatus.VotingSessionStarted, 'Voting session have not started yet');
-        require(voters[msg.sender].hasVoted != true, 'You have already voted');
-        require(_id < proposalsArray.length, 'Proposal not found'); // pas obligé, et pas besoin du >0 car uint
+        require(workflowStatus == WorkflowStatus.VotingSessionStarted, "Voting session have not started yet");
+        require(voters[msg.sender].hasVoted != true, "You have already voted");
+        require(_id < proposalsArray.length, "Proposal not found"); // pas obligé, et pas besoin du >0 car uint
 
         voters[msg.sender].votedProposalId = _id;
         voters[msg.sender].hasVoted = true;
@@ -111,25 +111,25 @@ contract Voting is Ownable {
     // ::::::::::::: STATE ::::::::::::: //
 
     function startProposalsRegistering() external onlyOwner {
-        require(workflowStatus == WorkflowStatus.RegisteringVoters, 'Registering proposals cant be started now');
+        require(workflowStatus == WorkflowStatus.RegisteringVoters, "Registering proposals can not be started now");
         workflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
         emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters, WorkflowStatus.ProposalsRegistrationStarted);
     }
 
     function endProposalsRegistering() external onlyOwner {
-        require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, 'Registering proposals havent started yet');
+        require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, "Registering proposals have not started yet");
         workflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted, WorkflowStatus.ProposalsRegistrationEnded);
     }
 
     function startVotingSession() external onlyOwner {
-        require(workflowStatus == WorkflowStatus.ProposalsRegistrationEnded, 'Registering proposals phase is not finished');
+        require(workflowStatus == WorkflowStatus.ProposalsRegistrationEnded, "Registering proposals phase is not finished");
         workflowStatus = WorkflowStatus.VotingSessionStarted;
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationEnded, WorkflowStatus.VotingSessionStarted);
     }
 
     function endVotingSession() external onlyOwner {
-        require(workflowStatus == WorkflowStatus.VotingSessionStarted, 'Voting session havent started yet');
+        require(workflowStatus == WorkflowStatus.VotingSessionStarted, "Voting session have not started yet");
         workflowStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
     }

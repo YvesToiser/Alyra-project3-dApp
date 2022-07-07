@@ -335,12 +335,12 @@ contract('Voting', function (accounts) {
             it('should not start proposal registering if not in the right workflow', async function () {
                 await this.VotingInstance.startProposalsRegistering({from: owner});
                 await expectRevert(this.VotingInstance.startProposalsRegistering({from: owner}),
-                    "Registering proposals cant be started now");
+                    "Registering proposals can not be started now");
             });
 
             it('should not end proposal registering if not in the right workflow', async function () {
                 await expectRevert(this.VotingInstance.endProposalsRegistering({from: owner}),
-                    "Registering proposals havent started yet");
+                    "Registering proposals have not started yet");
             });
 
             it('should not start voting session if not in the right workflow', async function () {
@@ -353,7 +353,7 @@ contract('Voting', function (accounts) {
                 await this.VotingInstance.startProposalsRegistering({from: owner});
                 await this.VotingInstance.endProposalsRegistering({from: owner});
                 await expectRevert(this.VotingInstance.endVotingSession({from: owner}),
-                    "Voting session havent started yet");
+                    "Voting session have not started yet");
             });
 
             it('should not tally votes if not in the right workflow', async function () {

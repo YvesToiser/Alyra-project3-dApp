@@ -25,6 +25,7 @@ require('dotenv').config();
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
+  contracts_build_directory: "../client/src/contracts",
   /**
    * Networks define how you connect to your ethereum client and let you set the
    * defaults web3 uses to send transactions. If you don't specify one truffle
@@ -34,8 +35,6 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
-
-  contracts_build_directory: "../client/src/contracts",
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -48,6 +47,7 @@ module.exports = {
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
     },
+
     ropsten:{
       provider : function() {
         return new HDWalletProvider(
@@ -57,6 +57,7 @@ module.exports = {
       },
       network_id:3,
     },
+
     kovan:{
       provider : function() {
         return new HDWalletProvider(
@@ -66,6 +67,7 @@ module.exports = {
       },
       network_id:42,
     },
+
     goerli:{
       provider : function() {
         return new HDWalletProvider(

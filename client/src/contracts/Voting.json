@@ -18823,10 +18823,132 @@
       "links": {},
       "address": "0x9f2Bc1D62B53Fd4102b5FD233236981f93eB47c9",
       "transactionHash": "0xafb0a9e626a9f70e01d6e30a13724214f3707fb9e45fdac64eef1014a23da9f3"
+    },
+    "1657540916058": {
+      "events": {
+        "0xcc97ff3d49208ba08dc7ada5cf9e88e59e047be7d363118838f7af1233c49c43": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogBadCall",
+          "type": "event"
+        },
+        "0x1d76c7e5736b9b335988489baea5b96ec803f8f1194842fe5ce3a6ec85e79b56": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "quantity",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDepot",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x92e393e9b54e2f801d3ea4beb0c5e71a21cc34a5d34b77d0fb8a3aa1650dc18f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposalRegistered",
+          "type": "event"
+        },
+        "0x4d99b957a2bc29a30ebd96a7be8e68fe50a3c701db28a91436490b7d53870ca4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voter",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "Voted",
+          "type": "event"
+        },
+        "0xb6be2187d059cc2a55fe29e0e503b566e1e0f8c8780096e185429350acffd3dd": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voterAddress",
+              "type": "address"
+            }
+          ],
+          "name": "VoterRegistered",
+          "type": "event"
+        },
+        "0x0a97a4ee45751e2abf3e4fc8946939630b11b371ea8ae39ccdc3056e98f5cc3f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "previousStatus",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "newStatus",
+              "type": "uint8"
+            }
+          ],
+          "name": "WorkflowStatusChange",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x5751D5fBB04E1AF415f4fd959B9701F08e5537D2",
+      "transactionHash": "0xfe7e51e29eb89903f10f7a913afd5cbb3aeffdb40cd04c3e019bc5fee8d21c92"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-07-11T08:05:30.571Z",
+  "updatedAt": "2022-07-11T13:27:24.480Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Yves Toiser (yves.toiser@pm.me)",

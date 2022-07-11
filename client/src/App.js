@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import VotingContract from "./contracts/Voting.json";
 import getWeb3 from "./getWeb3";
 import Address from "./components/Address.js";
+import Workflow from "./components/Workflow";
+import Whitelist from "./components/Whitelist";
 
 
 class App extends Component {
     state = {
-        web3: null, accounts: null, contract: null
+        web3: null, accounts: null, contract: null, workflowStatus: null
     };
 
     componentDidMount = async () => {
@@ -26,6 +28,8 @@ class App extends Component {
             );
 
             this.setState({ web3, accounts, contract: instance });
+            const workflowStatus = await instance.methods.workflowStatus().call();
+            this.setState({ workflowStatus });
 
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -43,6 +47,8 @@ class App extends Component {
         return (
             <div className="App">
                 <Address addr={this.state.accounts} />
+                <Workflow workflowStatus={this.state.workflowStatus}/>
+                <Whitelist workflowStatus={this.state.workflowStatus} accounts={this.state.accounts} contract={this.state.contract}/>
             </div>
         );
     }

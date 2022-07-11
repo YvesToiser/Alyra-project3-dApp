@@ -3,18 +3,14 @@ import React from 'react';
 export default class Whitelist extends React.Component {
 
     addVoter = async () => {
-        const { accounts, contract } = this.props;
         let voterAddress = document.getElementById("addVoterButton").value;
         // TODO check if voterAddress is correct format
-        const transaction = await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
-        console.log("Add Voter : " + transaction.events.VoterRegistered.returnValues.voterAddress);
+        await this.props.contract.methods.addVoter(voterAddress).send({ from: this.props.accounts[0] });
         this.props.onWhitelistChange();
         document.getElementById('addVoterButton').value = "";
     };
 
     renderWhitelistManagement() {
-        console.log("this.props.isOwner :" + this.props.isOwner);
-        console.log("this.props.workflowStatus :" + this.props.workflowStatus);
         if(this.props.isOwner) {
             if (this.props.workflowStatus === '0') {
                 return <div>
@@ -64,5 +60,4 @@ export default class Whitelist extends React.Component {
             </div>
         )
     }
-
 }

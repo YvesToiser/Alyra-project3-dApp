@@ -2,10 +2,6 @@ import React from 'react';
 
 export default class Workflow extends React.Component {
 
-    state = {
-        workflowStatus: null,
-    };
-
     switchWorkFlowStatus(wfs) {
         switch (wfs) {
             case '0' :
@@ -61,42 +57,31 @@ export default class Workflow extends React.Component {
     }
 
     startProposalsRegistering = async () => {
-        const { accounts, contract } = this.props;
-        const transaction = await contract.methods.startProposalsRegistering().send({ from: accounts[0] });
-        console.log("New Status : " + transaction.events.WorkflowStatusChange.returnValues.newStatus);
+        await this.props.contract.methods.startProposalsRegistering().send({ from: this.props.accounts[0] });
         this.props.onWorkflowChange()
     };
 
     endProposalsRegistering = async () => {
-        const { accounts, contract } = this.props;
-        const transaction = await contract.methods.endProposalsRegistering().send({ from: accounts[0] });
-        console.log("New Status : " + transaction.events.WorkflowStatusChange.returnValues.newStatus);
+        await this.props.contract.methods.endProposalsRegistering().send({ from: this.props.accounts[0] });
         this.props.onWorkflowChange()
     };
 
     startVotingSession = async () => {
-        const { accounts, contract } = this.props;
-        const transaction = await contract.methods.startVotingSession().send({ from: accounts[0] });
-        console.log("New Status : " + transaction.events.WorkflowStatusChange.returnValues.newStatus);
+        await this.props.contract.methods.startVotingSession().send({ from: this.props.accounts[0] });
         this.props.onWorkflowChange()
     };
 
     endVotingSession = async () => {
-        const { accounts, contract } = this.props;
-        const transaction = await contract.methods.endVotingSession().send({ from: accounts[0] });
-        console.log("New Status : " + transaction.events.WorkflowStatusChange.returnValues.newStatus);
+        await this.props.contract.methods.endVotingSession().send({ from: this.props.accounts[0] });
         this.props.onWorkflowChange()
     };
 
     tallyVotes = async () => {
-        const { accounts, contract } = this.props;
-        const transaction = await contract.methods.tallyVotes().send({ from: accounts[0] });
-        console.log("New Status : " + transaction.events.WorkflowStatusChange.returnValues.newStatus);
+        await this.props.contract.methods.tallyVotes().send({ from: this.props.accounts[0] });
         this.props.onWorkflowChange()
     };
 
     render() {
-
         const workflowStatusDisplay = this.switchWorkFlowStatus(this.props.workflowStatus);
 
         return(
@@ -107,5 +92,4 @@ export default class Workflow extends React.Component {
             </div>
         )
     }
-
 }

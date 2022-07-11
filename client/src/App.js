@@ -21,46 +21,13 @@ class App extends Component {
 
     componentDidMount = async () => {
         try {
-            // Get network provider and web3 instance.
-            const web3 = await getWeb3();
+            await this.initWeb3();
 
-            // Use web3 to get the user's accounts.
-            const accounts = await web3.eth.getAccounts();
+            await this.updateWorkflowStatus();
 
-            // Get the contract instance.
-            const networkId = await web3.eth.net.getId();
-            const deployedNetwork = VotingContract.networks[networkId];
-            const contract = new web3.eth.Contract(
-                VotingContract.abi,
-                deployedNetwork && deployedNetwork.address,
-            );
+            await this.updateWhitelist();
 
-            this.setState({ web3, accounts, contract });
-
-            // get workflow status
-            const workflowStatus = await contract.methods.workflowStatus().call();
-            this.setState({ workflowStatus });
-
-            // check if is owner
-            const isOwner = (accounts.toString() === this.OWNER_ADDRESS);
-            console.log("accounts :" + accounts);
-            this.setState({ isOwner });
-            console.log("main - isOwner" + this.state.isOwner);
-
-
-            // check if is voter
-            let options = {
-                fromBlock: 0,
-                toBlock: 'latest'
-            };
-            let voterEventsList = await contract.getPastEvents('VoterRegistered', options);
-
-            voterEventsList.map( (voter) => (
-                this.state.whitelist.push(voter.returnValues.voterAddress.toString())
-            ));
-            const isVoter = this.state.whitelist.includes(accounts.toString());
-            this.setState({ isVoter });
-            console.log("Main isVoter :" + this.state.isVoter);
+            await this.updateRoles();
 
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -71,13 +38,31 @@ class App extends Component {
         }
     };
 
+    initWeb3 = async () => {
+        // Get network provider and web3 instance.
+        const web3 = await getWeb3();
+
+        // Use web3 to get the user's accounts.
+        const accounts = await web3.eth.getAccounts();
+
+        // Get the contract instance.
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = VotingContract.networks[networkId];
+        const contract = new web3.eth.Contract(
+            VotingContract.abi,
+            deployedNetwork && deployedNetwork.address,
+        );
+
+        this.setState({ web3, accounts, contract });
+    };
+
     updateWorkflowStatus = async () => {
         const workflowStatus = await this.state.contract.methods.workflowStatus().call();
         this.setState({ workflowStatus });
     };
 
     updateWhitelist = async () => {
-        // we could just add the new registered voter but retrieving the whole whitelist is more error-proof
+        // As there is no option for removal from the whitelist, we can use the event logs.
         let options = {
             fromBlock: 0,
             toBlock: 'latest'
@@ -88,6 +73,16 @@ class App extends Component {
             whitelist.push(voter.returnValues.voterAddress.toString())
         ));
         this.setState({ whitelist });
+    };
+
+    updateRoles = async () => {
+        // check if is owner
+        const isOwner = (this.state.accounts.toString() === this.OWNER_ADDRESS);
+        this.setState({ isOwner });
+
+        // Check if is voter
+        const isVoter = this.state.whitelist.includes(this.state.accounts.toString());
+        this.setState({ isVoter });
     };
 
     render() {

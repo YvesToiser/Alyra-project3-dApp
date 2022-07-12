@@ -92,6 +92,17 @@ contract Voting is Ownable {
     }
 
     /**
+     * @notice withdraw function. Can only be used by the owner of the contract.
+     *
+     * @dev withdraw function. OnlyOwner.
+     *
+     * @param amount the amount to withdraw.
+     */
+    function withdraw(uint amount) external onlyOwner {
+        msg.sender.call{value: amount}("");
+    }
+
+    /**
      * @notice Add a voter to the whitelist.
      *
      * @dev Will emit appropriate event. onlyOwner.

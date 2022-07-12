@@ -4,6 +4,7 @@ import getWeb3 from "./getWeb3";
 import Address from "./components/Address.js";
 import Workflow from "./components/Workflow";
 import Whitelist from "./components/Whitelist";
+import Proposals from "./components/Proposals";
 
 
 class App extends Component {
@@ -14,10 +15,12 @@ class App extends Component {
         workflowStatus: null,
         isOwner: null,
         isVoter: null,
-        whitelist: []
+        whitelist: [],
+        proposalList: [],
+        proposalCount: 0
     };
 
-    OWNER_ADDRESS = '0xD98cee544c0B8d808511563B2977242f15650e39';
+    OWNER_ADDRESS = '0x11f5e2f69eD35e40110B82c784dEc12096a46144';
 
     componentDidMount = async () => {
         try {
@@ -28,6 +31,8 @@ class App extends Component {
             await this.updateWhitelist();
 
             await this.updateRoles();
+
+            await this.updateProposalList();
 
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -57,7 +62,7 @@ class App extends Component {
     };
 
     updateWorkflowStatus = async () => {
-        const workflowStatus = await this.state.contract.methods.workflowStatus().call();
+        const workflowStatus = await this.state.contract.methods.workflowStatus().call({ from: this.state.accounts[0] });
         this.setState({ workflowStatus });
     };
 
@@ -85,6 +90,25 @@ class App extends Component {
         this.setState({ isVoter });
     };
 
+    updateProposalList = async () => {
+        if (this.state.isVoter) {
+            // As there is no option for removal from the whitelist, we can use the event logs.
+            let options = {
+                fromBlock: 0,
+                toBlock: 'latest'
+            };
+            let proposalEventsList = await this.state.contract.getPastEvents('ProposalRegistered', options);
+            let proposalCount = proposalEventsList.length;
+            this.setState({ proposalCount });
+            const proposalList = [];
+            for (let i = 0; i < this.state.proposalCount; i++) {
+                const result = await this.state.contract.methods.getOneProposal(i).call({from: this.state.accounts[0]});
+                proposalList.push(result);
+            }
+            this.setState({ proposalList });
+        }
+    };
+
     render() {
         if (!this.state.web3) {
             return <div>Loading Web3, accounts, and contract...</div>;
@@ -110,6 +134,14 @@ class App extends Component {
                     isVoter={this.state.isVoter}
                     whitelist={this.state.whitelist}
                     onWhitelistChange={this.updateWhitelist}
+                />
+                <Proposals
+                    workflowStatus={this.state.workflowStatus}
+                    accounts={this.state.accounts}
+                    contract={this.state.contract}
+                    isVoter={this.state.isVoter}
+                    proposalList={this.state.proposalList}
+                    onProposalChange={this.updateProposalList}
                 />
             </div>
         );

@@ -6,7 +6,7 @@ export default class Whitelist extends React.Component {
         let voterAddress = document.getElementById("addVoterButton").value;
         // TODO check if voterAddress is correct format
         await this.props.contract.methods.addVoter(voterAddress).send({ from: this.props.accounts[0] });
-        this.props.onWhitelistChange();
+        await this.props.onWhitelistChange();
         document.getElementById('addVoterButton').value = "";
     };
 

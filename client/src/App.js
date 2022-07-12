@@ -91,7 +91,10 @@ class App extends Component {
         }
         return (
             <div className="App">
-                <Address addr={this.state.accounts} />
+                <Address
+                    address={this.state.accounts}
+                    web3={this.state.web3}
+                />
                 <Workflow
                     workflowStatus={this.state.workflowStatus}
                     accounts={this.state.accounts}

@@ -19032,6 +19032,12 @@
     "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0xee806ff9c99fc037c1cb995D6737d02483375532",
+      "transactionHash": "0x46500716701281e452b37a3957165e189eacfe3c994d339d103bde7ee7759ae2"
+    },
     "1657183377530": {
       "events": {},
       "links": {},
@@ -19401,10 +19407,16 @@
       "links": {},
       "address": "0xf359b34C77E9C0433bE7D0886315c639aaC57396",
       "transactionHash": "0xbe5365284a541e562aa432a857c9032366e286294bbfb1c35d9142f2eb184e70"
+    },
+    "1657609656369": {
+      "events": {},
+      "links": {},
+      "address": "0x5CF7aB2F3A7Ca812bcA187070d20F3871BbA7B09",
+      "transactionHash": "0x9f64bcec400d5fcdb00b747a8f2c9c4db8c254a567ab17926107c5a6ea68d8f7"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-07-12T06:48:40.430Z",
+  "updatedAt": "2022-07-12T07:19:39.379Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Yves Toiser (yves.toiser@pm.me)",

@@ -10,11 +10,30 @@ export default class Proposals extends React.Component {
         document.getElementById('addProposalButton').value = "";
     };
 
+    voteForProposal = async (_i) => {
+        // TODO check if voter has already voted
+        await this.props.contract.methods.setVote(_i).send({ from: this.props.accounts[0] });
+    };
+
     renderProposals () {
         if (!this.props.isVoter) {
             return <div>
                 <p>You are not registered. So you can not see the proposals.</p>
             </div>
+        } else if (this.props.workflowStatus === '3') {
+            // TODO do not propose vote if voter has already voted
+            const list = [];
+            for (let i = 0; i < this.props.proposalList.length; i++) {
+                list.push(
+                    <tr><td>{this.props.proposalList[i].description}</td>
+                    <td><button onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
+                );
+            }
+            return <table>
+                <tbody>
+                    {list}
+                </tbody>
+            </table>
         } else {
             return <table>
                 <tbody>
@@ -48,8 +67,9 @@ export default class Proposals extends React.Component {
                     <p>The proposal registration has Ended. Vote will start soon.</p>
                 </div>
             } else if (this.props.workflowStatus === '3') {
-                // TODO deal with vote here
-                return <div></div>
+                return <div>
+                    <p>The vote is open. You can vote for your favorite proposal.</p>
+                </div>
             } else if (this.props.workflowStatus === '4') {
                 return <div>
                     <p>The vote has Ended. Results will be published soon.</p>

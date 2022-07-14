@@ -20,7 +20,7 @@ class App extends Component {
         proposalCount: 0
     };
 
-    OWNER_ADDRESS = '0x11f5e2f69eD35e40110B82c784dEc12096a46144';
+    OWNER_ADDRESS = '0x2DefC4755408426186c92E786C5ce230a84ba191';
 
     componentDidMount = async () => {
         try {

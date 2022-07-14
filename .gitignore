@@ -4,7 +4,4 @@ truffle/.env
 truffle/node_modules/
 
 client/node_modules/
-
-
-
-client/src/legacy_App.js
+client/build/

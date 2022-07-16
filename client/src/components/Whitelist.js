@@ -4,9 +4,12 @@ export default class Whitelist extends React.Component {
 
     addVoter = async () => {
         let voterAddress = document.getElementById("addVoterButton").value;
-        // TODO check if voterAddress is correct format
-        await this.props.contract.methods.addVoter(voterAddress).send({ from: this.props.accounts[0] });
-        await this.props.onWhitelistChange();
+        if (voterAddress.match(/^0x[a-fA-F0-9]{40}$/)) {
+            await this.props.contract.methods.addVoter(voterAddress).send({from: this.props.accounts[0]});
+            await this.props.onWhitelistChange();
+        } else {
+            // show error message
+        }
         document.getElementById('addVoterButton').value = "";
     };
 
@@ -45,6 +48,26 @@ export default class Whitelist extends React.Component {
 
     renderWhitelistStatus() {
         if(this.props.isVoter) {
+            if (this.props.workflowStatus === '5') {
+                const list = [];
+                list.push(<tr><td>Voter address</td><td>vote</td></tr>);
+                for (let i = 0; i < this.props.voteList.length; i++) {
+                    console.log('this.props.voteList[i] => address: ' + this.props.voteList[i].voterAddress);
+                    console.log('this.props.voteList[i] => proposalId: ' + this.props.voteList[i].proposalId);
+                    list.push(<tr>
+                        <td>{this.props.voteList[i].voterAddress.toString()}</td>
+                        <td>{this.props.voteList[i].proposalId.toString()}</td>
+                    </tr>);
+                }
+                return <div>
+                    <p>You can see how the participants have voted below. Participants who are not in the list below have not voted.</p>
+                    <table>
+                        <tbody>
+                            {list}
+                        </tbody>
+                    </table>
+                </div>
+            }
             return <p>"Congratulations! You have been registered in the whitelist. Check the workflow status to see if you can add proposals or vote."</p>
         } else {
             return <p>"You are not registered in the whitelist."</p>

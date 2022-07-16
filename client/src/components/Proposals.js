@@ -4,9 +4,12 @@ export default class Proposals extends React.Component {
 
     addProposal = async () => {
         let proposalDescription = document.getElementById("addProposalButton").value;
-        // TODO check if proposalDescription is correct format
-        await this.props.contract.methods.addProposal(proposalDescription).send({ from: this.props.accounts[0] });
-        await this.props.onProposalChange();
+        if (proposalDescription.match(/.*\S.*/)) {
+            await this.props.contract.methods.addProposal(proposalDescription).send({ from: this.props.accounts[0] });
+            await this.props.onProposalChange();
+        } else {
+            // show error message
+        }
         document.getElementById('addProposalButton').value = "";
     };
 
@@ -29,11 +32,7 @@ export default class Proposals extends React.Component {
             </tbody>
         </table>;
 
-        if (!this.props.isVoter) {
-            return <div>
-                <p>You are not registered. So you can not see the proposals.</p>
-            </div>
-        } else {
+        if (this.props.isVoter){
             if (this.props.workflowStatus === '0' || this.props.workflowStatus === '1' || this.props.workflowStatus === '2') {
                 return <div>
                     <p>You are registered but the vote has not opened yet. </p>
@@ -63,8 +62,8 @@ export default class Proposals extends React.Component {
             }
             if (this.props.workflowStatus === '5') {
                 return <div>
-                    <p>The vote has ended. Results are available. </p>
-                    {proposalList}
+                    <p>The vote has ended. The winning proposal is : </p>
+                    {this.props.winningProposal}
                 </div>
             }
         }

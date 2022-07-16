@@ -18,24 +18,17 @@ class App extends Component {
         hasVoted: null,
         whitelist: [],
         proposalList: [],
-        proposalCount: 0
+        voteList: [],
+        proposalCount: 0,
+        winningProposal: null
     };
 
-    OWNER_ADDRESS = '0x79f8240427b242238f10919A381164B468cc5a89';
+    OWNER_ADDRESS = '0xeC76e5A6a442b8bcfA71F24A3CfF71AEceb37b4b';
     CONTRACT_GENESIS_BLOCK = 0; // In the case of localhost blockchain => 0.
 
     componentDidMount = async () => {
         try {
             await this.initWeb3();
-
-            await this.updateWorkflowStatus();
-
-            await this.updateWhitelist();
-
-            await this.updateRoles();
-
-            await this.updateProposalList();
-
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -43,6 +36,14 @@ class App extends Component {
             );
             console.error(error);
         }
+
+        await this.updateWorkflowStatus();
+
+        await this.updateWhitelist();
+
+        await this.updateRoles();
+
+        await this.updateProposalList();
     };
 
     initWeb3 = async () => {
@@ -66,6 +67,9 @@ class App extends Component {
     updateWorkflowStatus = async () => {
         const workflowStatus = await this.state.contract.methods.workflowStatus().call({ from: this.state.accounts[0] });
         this.setState({ workflowStatus });
+        if (workflowStatus === '5') {
+            await this.setWinner();
+        }
     };
 
     updateWhitelist = async () => {
@@ -107,12 +111,17 @@ class App extends Component {
         };
         let votesEventsList = await this.state.contract.getPastEvents('Voted', options);
         let hasVoted = false;
+        let voteList = [];
         for (let i = 0; i < votesEventsList.length; i++) {
             if (votesEventsList[i].returnValues.voter.toString() === this.state.accounts[0]) {
                 hasVoted = true;
             }
+            voteList.push({
+                voterAddress : votesEventsList[i].returnValues.voter.toString(),
+                proposalId : votesEventsList[i].returnValues.proposalId.toString()
+            })
         }
-        this.setState({hasVoted});
+        this.setState({hasVoted, voteList});
     };
 
     updateProposalList = async () => {
@@ -134,6 +143,12 @@ class App extends Component {
             }
             this.setState({ proposalList });
         }
+    };
+
+    setWinner = async () => {
+        const winnerId = await this.state.contract.methods.winningProposalID().call({ from: this.state.accounts[0] });
+        const winningProposal = await this.state.contract.methods.getOneProposal(winnerId).call({ from: this.state.accounts[0] });
+        this.setState({ winningProposal });
     };
 
     render() {
@@ -160,6 +175,7 @@ class App extends Component {
                     isOwner={this.state.isOwner}
                     isVoter={this.state.isVoter}
                     whitelist={this.state.whitelist}
+                    voteList={this.state.voteList}
                     onWhitelistChange={this.updateWhitelist}
                 />
                 <Proposals
@@ -169,8 +185,9 @@ class App extends Component {
                     isVoter={this.state.isVoter}
                     hasVoted={this.state.hasVoted}
                     proposalList={this.state.proposalList}
+                    winningProposal={this.state.winningProposal}
                     onProposalChange={this.updateProposalList}
-                    onVoteChange={this.updateVoteStatus()}
+                    onVoteChange={this.updateVoteStatus}
                 />
             </div>
         );

@@ -31,14 +31,10 @@ export default class Address extends React.Component {
                 return 'Ethereum Mainnet';
             case '3' :
                 return 'Ropsten';
-            case '4' :
-                return 'Rinkeby';
             case '5' :
                 return 'Görli';
-            case '10' :
-                return 'Optimism';
-            case '137' :
-                return 'Polygon';
+            case '42' :
+                return 'Kovan';
             default:
                 return 'Wrong Network.';
         }
@@ -56,5 +52,4 @@ export default class Address extends React.Component {
             </div>
         )
     }
-
 }

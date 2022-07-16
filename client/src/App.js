@@ -15,12 +15,14 @@ class App extends Component {
         workflowStatus: null,
         isOwner: null,
         isVoter: null,
+        hasVoted: null,
         whitelist: [],
         proposalList: [],
         proposalCount: 0
     };
 
-    OWNER_ADDRESS = '0x2DefC4755408426186c92E786C5ce230a84ba191';
+    OWNER_ADDRESS = '0x79f8240427b242238f10919A381164B468cc5a89';
+    CONTRACT_GENESIS_BLOCK = 0; // In the case of localhost blockchain => 0.
 
     componentDidMount = async () => {
         try {
@@ -68,8 +70,10 @@ class App extends Component {
 
     updateWhitelist = async () => {
         // As there is no option for removal from the whitelist, we can use the event logs.
+        // It is safest to check all the events history.
+        // To avoid browsing all the blockchain we will start from the block when the contract is launched.
         let options = {
-            fromBlock: 0,
+            fromBlock: this.CONTRACT_GENESIS_BLOCK,
             toBlock: 'latest'
         };
         let voterEventsList = await this.state.contract.getPastEvents('VoterRegistered', options);
@@ -88,13 +92,36 @@ class App extends Component {
         // Check if is voter
         const isVoter = this.state.whitelist.includes(this.state.accounts.toString());
         this.setState({ isVoter });
+
+        // Check if voter has already voted
+        await this.updateVoteStatus();
+    };
+
+    updateVoteStatus = async () => {
+        // As there is no cancellation of vote, we can use the event logs.
+        // It is safest to check all the events history.
+        // To avoid browsing all the blockchain we will start from the block when the contract is launched.
+        let options = {
+            fromBlock: this.CONTRACT_GENESIS_BLOCK,
+            toBlock: 'latest'
+        };
+        let votesEventsList = await this.state.contract.getPastEvents('Voted', options);
+        let hasVoted = false;
+        for (let i = 0; i < votesEventsList.length; i++) {
+            if (votesEventsList[i].returnValues.voter.toString() === this.state.accounts[0]) {
+                hasVoted = true;
+            }
+        }
+        this.setState({hasVoted});
     };
 
     updateProposalList = async () => {
+        // As there is no option to remove a proposal, we can use the event logs.
+        // It is safest to check all the events history.
+        // To avoid browsing all the blockchain we will start from the block when the contract is launched.
         if (this.state.isVoter) {
-            // As there is no option for removal from the whitelist, we can use the event logs.
             let options = {
-                fromBlock: 0,
+                fromBlock: this.CONTRACT_GENESIS_BLOCK,
                 toBlock: 'latest'
             };
             let proposalEventsList = await this.state.contract.getPastEvents('ProposalRegistered', options);
@@ -140,8 +167,10 @@ class App extends Component {
                     accounts={this.state.accounts}
                     contract={this.state.contract}
                     isVoter={this.state.isVoter}
+                    hasVoted={this.state.hasVoted}
                     proposalList={this.state.proposalList}
                     onProposalChange={this.updateProposalList}
+                    onVoteChange={this.updateVoteStatus()}
                 />
             </div>
         );

@@ -11,39 +11,62 @@ export default class Proposals extends React.Component {
     };
 
     voteForProposal = async (_i) => {
-        // TODO check if voter has already voted
-        await this.props.contract.methods.setVote(_i).send({ from: this.props.accounts[0] });
+        if (!this.props.hasVoted) {
+            await this.props.contract.methods.setVote(_i).send({ from: this.props.accounts[0] });
+            await this.props.onVoteChange();
+        }
     };
 
     renderProposals () {
+        const proposalList =
+        <table>
+            <tbody>
+            {this.props.proposalList.map((prop) => (
+                <tr>
+                    <td>{prop.description}</td>
+                </tr>
+            ))}
+            </tbody>
+        </table>;
+
         if (!this.props.isVoter) {
             return <div>
                 <p>You are not registered. So you can not see the proposals.</p>
             </div>
-        } else if (this.props.workflowStatus === '3') {
-            // TODO do not propose vote if voter has already voted
-            const list = [];
-            for (let i = 0; i < this.props.proposalList.length; i++) {
-                list.push(
-                    <tr><td>{this.props.proposalList[i].description}</td>
-                    <td><button onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
-                );
-            }
-            return <table>
-                <tbody>
-                    {list}
-                </tbody>
-            </table>
         } else {
-            return <table>
-                <tbody>
-                {this.props.proposalList.map((prop) => (
-                    <tr>
-                        <td>{prop.description}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            if (this.props.workflowStatus === '0' || this.props.workflowStatus === '1' || this.props.workflowStatus === '2') {
+                return <div>
+                    <p>You are registered but the vote has not opened yet. </p>
+                    {proposalList}
+                </div>
+            }
+            if (this.props.workflowStatus === '3') {
+                if (this.props.hasVoted) {
+                    return <div>
+                        <p>You are registered and have already voted. Please wait before the results are available. </p>
+                        {proposalList}
+                    </div>
+                } else {
+                    const list = [];
+                    for (let i = 0; i < this.props.proposalList.length; i++) {
+                        list.push(
+                            <tr><td>{this.props.proposalList[i].description}</td>
+                                <td><button onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
+                        );
+                    }
+                    return <table>
+                        <tbody>
+                        {list}
+                        </tbody>
+                    </table>
+                }
+            }
+            if (this.props.workflowStatus === '5') {
+                return <div>
+                    <p>The vote has ended. Results are available. </p>
+                    {proposalList}
+                </div>
+            }
         }
     };
 
@@ -66,17 +89,13 @@ export default class Proposals extends React.Component {
                 return <div>
                     <p>The proposal registration has Ended. Vote will start soon.</p>
                 </div>
-            } else if (this.props.workflowStatus === '3') {
+            } else if (this.props.workflowStatus === '3' && !this.props.hasVoted) {
                 return <div>
                     <p>The vote is open. You can vote for your favorite proposal.</p>
                 </div>
             } else if (this.props.workflowStatus === '4') {
                 return <div>
-                    <p>The vote has Ended. Results will be published soon.</p>
-                </div>
-            } else if (this.props.workflowStatus === '5') {
-                return <div>
-                    <p>The vote has Ended. Results are available.</p>
+                    <p>The vote has ended. Results will be published soon.</p>
                 </div>
             }
         }

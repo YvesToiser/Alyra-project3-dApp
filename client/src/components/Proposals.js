@@ -50,7 +50,7 @@ export default class Proposals extends React.Component {
                     for (let i = 0; i < this.props.proposalList.length; i++) {
                         list.push(
                             <tr><td>{this.props.proposalList[i].description}</td>
-                                <td><button class="button" onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
+                                <td><button className="button" onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
                         );
                     }
                     return <table className='whitelistTable'>
@@ -84,7 +84,7 @@ export default class Proposals extends React.Component {
             } else if (this.props.workflowStatus === '1') {
                 return <div>
                     <input type="text" id="addProposalButton"/>
-                    <button class="button" onClick={this.addProposal}>Add proposal</button>
+                    <button className="button" onClick={this.addProposal}>Add proposal</button>
                 </div>
             } else if (this.props.workflowStatus === '2') {
                 return <div>

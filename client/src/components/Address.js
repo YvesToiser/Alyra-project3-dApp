@@ -48,8 +48,10 @@ export default class Address extends React.Component {
                 return 'Görli';
             case '42' :
                 return 'Kovan';
+            case '1337' :
+                return 'LocalHost';
             default:
-                return 'Wrong Network.';
+                return 'Wrong Network';
         }
     }
 
@@ -67,7 +69,6 @@ export default class Address extends React.Component {
                 <div id='networkBox'>
                     {this.state.network}
                 </div>
-
             </div>
         )
     }

@@ -83,11 +83,62 @@ td {
 }
 
 #workflow {
-    width: 100%;
+    width: 1200px;
     height: 100px;
     text-align: center;
+    margin: auto;
+}
+
+.wfBox, .wfBoxSelected, .wfButton {
+    width: 130px;
+    display: flex;
+    text-align: center;
+    height: 30px;
+    line-height: 20px;
+    padding: 20px;
+    -moz-box-align: center;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 16px;
+    float: left;
+}
+
+.wfBoxSelected {
+    background-color: dodgerblue;
+    color: black;
+    font-weight: 600;
+    font-size: 0.8em;
+}
+
+.wfBox {
     background-color: rgb(200, 200, 200);
     color: black;
+    font-size: 0.8em;
+    opacity: 50%;
+}
+
+button.wfButton {
+    background-color: darkred;
+    color: black;
+    font-weight: 600;
+    border: 2px solid black;
+    padding: 20px;
+    display: block;
+    height: 74px;
+    line-height: 20px;
+    width: 180px;
+}
+
+button.wfButton:hover {
+    background-color: black;
+    color: darkred;
+    font-weight: 600;
+    padding: 20px;
+    border: 2px solid black;
+    display: block;
+    height: 74px;
+    line-height: 20px;
+    width: 180px;
 }
 
 #container {

@@ -24,7 +24,7 @@ class App extends Component {
         winningProposal: null
     };
 
-    OWNER_ADDRESS = '0x0e2172F9f7F1b0e5ce816EEFD3Df6D7DF5ff65F5';
+    OWNER_ADDRESS = '0x3c99C4BE3a49e13114f8D2062D5BBE3ee1E76623';
     CONTRACT_GENESIS_BLOCK = 0; // In the case of localhost blockchain => 0.
 
     componentDidMount = async () => {
@@ -166,15 +166,13 @@ class App extends Component {
                         web3={this.state.web3}
                     />
                 </div>
-                <div id='workflow'>
-                    <Workflow
-                        workflowStatus={this.state.workflowStatus}
-                        accounts={this.state.accounts}
-                        contract={this.state.contract}
-                        isOwner={this.state.isOwner}
-                        onWorkflowChange={this.updateWorkflowStatus}
-                    />
-                </div>
+                <Workflow
+                    workflowStatus={this.state.workflowStatus}
+                    accounts={this.state.accounts}
+                    contract={this.state.contract}
+                    isOwner={this.state.isOwner}
+                    onWorkflowChange={this.updateWorkflowStatus}
+                />
                 <div id='container'>
                     <Whitelist
                         workflowStatus={this.state.workflowStatus}

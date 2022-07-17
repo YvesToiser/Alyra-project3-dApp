@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Alyra-project3-dApp/static/css/main.1fa44957.chunk.css",
-    "main.js": "/Alyra-project3-dApp/static/js/main.7e514a9d.chunk.js",
-    "main.js.map": "/Alyra-project3-dApp/static/js/main.7e514a9d.chunk.js.map",
+    "main.js": "/Alyra-project3-dApp/static/js/main.e2e56663.chunk.js",
+    "main.js.map": "/Alyra-project3-dApp/static/js/main.e2e56663.chunk.js.map",
     "runtime-main.js": "/Alyra-project3-dApp/static/js/runtime-main.54720f5b.js",
     "runtime-main.js.map": "/Alyra-project3-dApp/static/js/runtime-main.54720f5b.js.map",
     "static/js/2.91568d64.chunk.js": "/Alyra-project3-dApp/static/js/2.91568d64.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.54720f5b.js",
     "static/js/2.91568d64.chunk.js",
     "static/css/main.1fa44957.chunk.css",
-    "static/js/main.7e514a9d.chunk.js"
+    "static/js/main.e2e56663.chunk.js"
   ]
 }

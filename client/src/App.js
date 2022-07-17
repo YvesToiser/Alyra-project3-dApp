@@ -5,6 +5,7 @@ import Address from "./components/Address.js";
 import Workflow from "./components/Workflow";
 import Whitelist from "./components/Whitelist";
 import Proposals from "./components/Proposals";
+import "./App.css";
 
 
 class App extends Component {
@@ -23,7 +24,7 @@ class App extends Component {
         winningProposal: null
     };
 
-    OWNER_ADDRESS = '0xeC76e5A6a442b8bcfA71F24A3CfF71AEceb37b4b';
+    OWNER_ADDRESS = '0x0e2172F9f7F1b0e5ce816EEFD3Df6D7DF5ff65F5';
     CONTRACT_GENESIS_BLOCK = 0; // In the case of localhost blockchain => 0.
 
     componentDidMount = async () => {
@@ -116,9 +117,11 @@ class App extends Component {
             if (votesEventsList[i].returnValues.voter.toString() === this.state.accounts[0]) {
                 hasVoted = true;
             }
+            const proposalId = votesEventsList[i].returnValues.proposalId.toString()
+            const proposal = await this.state.contract.methods.getOneProposal(proposalId).call({from: this.state.accounts[0]});
             voteList.push({
                 voterAddress : votesEventsList[i].returnValues.voter.toString(),
-                proposalId : votesEventsList[i].returnValues.proposalId.toString()
+                proposal : proposal.description
             })
         }
         this.setState({hasVoted, voteList});
@@ -148,7 +151,7 @@ class App extends Component {
     setWinner = async () => {
         const winnerId = await this.state.contract.methods.winningProposalID().call({ from: this.state.accounts[0] });
         const winningProposal = await this.state.contract.methods.getOneProposal(winnerId).call({ from: this.state.accounts[0] });
-        this.setState({ winningProposal });
+        this.setState({ winningProposal: winningProposal.description });
     };
 
     render() {
@@ -157,38 +160,44 @@ class App extends Component {
         }
         return (
             <div className="App">
-                <Address
-                    address={this.state.accounts}
-                    web3={this.state.web3}
-                />
-                <Workflow
-                    workflowStatus={this.state.workflowStatus}
-                    accounts={this.state.accounts}
-                    contract={this.state.contract}
-                    isOwner={this.state.isOwner}
-                    onWorkflowChange={this.updateWorkflowStatus}
-                />
-                <Whitelist
-                    workflowStatus={this.state.workflowStatus}
-                    accounts={this.state.accounts}
-                    contract={this.state.contract}
-                    isOwner={this.state.isOwner}
-                    isVoter={this.state.isVoter}
-                    whitelist={this.state.whitelist}
-                    voteList={this.state.voteList}
-                    onWhitelistChange={this.updateWhitelist}
-                />
-                <Proposals
-                    workflowStatus={this.state.workflowStatus}
-                    accounts={this.state.accounts}
-                    contract={this.state.contract}
-                    isVoter={this.state.isVoter}
-                    hasVoted={this.state.hasVoted}
-                    proposalList={this.state.proposalList}
-                    winningProposal={this.state.winningProposal}
-                    onProposalChange={this.updateProposalList}
-                    onVoteChange={this.updateVoteStatus}
-                />
+                <div id='header'>
+                    <Address
+                        address={this.state.accounts}
+                        web3={this.state.web3}
+                    />
+                </div>
+                <div id='workflow'>
+                    <Workflow
+                        workflowStatus={this.state.workflowStatus}
+                        accounts={this.state.accounts}
+                        contract={this.state.contract}
+                        isOwner={this.state.isOwner}
+                        onWorkflowChange={this.updateWorkflowStatus}
+                    />
+                </div>
+                <div id='container'>
+                    <Whitelist
+                        workflowStatus={this.state.workflowStatus}
+                        accounts={this.state.accounts}
+                        contract={this.state.contract}
+                        isOwner={this.state.isOwner}
+                        isVoter={this.state.isVoter}
+                        whitelist={this.state.whitelist}
+                        voteList={this.state.voteList}
+                        onWhitelistChange={this.updateWhitelist}
+                    />
+                    <Proposals
+                        workflowStatus={this.state.workflowStatus}
+                        accounts={this.state.accounts}
+                        contract={this.state.contract}
+                        isVoter={this.state.isVoter}
+                        hasVoted={this.state.hasVoted}
+                        proposalList={this.state.proposalList}
+                        winningProposal={this.state.winningProposal}
+                        onProposalChange={this.updateProposalList}
+                        onVoteChange={this.updateVoteStatus}
+                    />
+                </div>
             </div>
         );
     }

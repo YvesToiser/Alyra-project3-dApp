@@ -22,8 +22,8 @@ export default class Proposals extends React.Component {
 
     renderProposals () {
         const proposalList =
-        <table>
-            <tbody>
+        <table className='whitelistTable'>
+            <tbody className='tableBody'>
             {this.props.proposalList.map((prop) => (
                 <tr>
                     <td>{prop.description}</td>
@@ -50,11 +50,11 @@ export default class Proposals extends React.Component {
                     for (let i = 0; i < this.props.proposalList.length; i++) {
                         list.push(
                             <tr><td>{this.props.proposalList[i].description}</td>
-                                <td><button onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
+                                <td><button class="button" onClick={() => this.voteForProposal(i)}>Vote for this proposal</button></td></tr>
                         );
                     }
-                    return <table>
-                        <tbody>
+                    return <table className='whitelistTable'>
+                        <tbody className='tableBody'>
                         {list}
                         </tbody>
                     </table>
@@ -63,7 +63,9 @@ export default class Proposals extends React.Component {
             if (this.props.workflowStatus === '5') {
                 return <div>
                     <p>The vote has ended. The winning proposal is : </p>
-                    {this.props.winningProposal}
+                    <span id="winner">
+                        {this.props.winningProposal}
+                    </span>
                 </div>
             }
         }
@@ -82,7 +84,7 @@ export default class Proposals extends React.Component {
             } else if (this.props.workflowStatus === '1') {
                 return <div>
                     <input type="text" id="addProposalButton"/>
-                    <button onClick={this.addProposal}>Add proposal</button>
+                    <button class="button" onClick={this.addProposal}>Add proposal</button>
                 </div>
             } else if (this.props.workflowStatus === '2') {
                 return <div>
@@ -103,7 +105,7 @@ export default class Proposals extends React.Component {
     render(){
         return(
             <div id='proposals'>
-                <h3>Proposals : </h3>
+                <h3>Proposals</h3>
                 { this.renderProposalSubmission() }
                 { this.renderProposals() }
             </div>

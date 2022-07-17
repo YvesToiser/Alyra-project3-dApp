@@ -25,27 +25,27 @@ export default class Workflow extends React.Component {
         if (this.props.isOwner) {
             if (this.props.workflowStatus === '0') {
                 return <div>
-                    <button onClick={this.startProposalsRegistering}>Start proposals registering</button>
+                    <button class="button" onClick={this.startProposalsRegistering}>Start proposals registering</button>
                 </div>
             }
             if (this.props.workflowStatus === '1') {
                 return <div>
-                    <button onClick={this.endProposalsRegistering}>End proposals registering</button>
+                    <button class="button" onClick={this.endProposalsRegistering}>End proposals registering</button>
                 </div>
             }
             if (this.props.workflowStatus === '2') {
                 return <div>
-                    <button onClick={this.startVotingSession}>Start voting session</button>
+                    <button class="button" onClick={this.startVotingSession}>Start voting session</button>
                 </div>
             }
             if (this.props.workflowStatus === '3') {
                 return <div>
-                    <button onClick={this.endVotingSession}>End voting session</button>
+                    <button class="button" onClick={this.endVotingSession}>End voting session</button>
                 </div>
             }
             if (this.props.workflowStatus === '4') {
                 return <div>
-                    <button onClick={this.tallyVotes}>Tally votes</button>
+                    <button class="button" onClick={this.tallyVotes}>Tally votes</button>
                 </div>
             }
             if (this.props.workflowStatus === '5') {
@@ -86,7 +86,7 @@ export default class Workflow extends React.Component {
 
         return(
             <div id='workflow'>
-                <h3>Workflow Status : </h3>
+                <h3>Workflow Status</h3>
                 {workflowStatusDisplay}
                 { this.workflowManagement() }
             </div>

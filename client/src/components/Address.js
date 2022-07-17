@@ -4,7 +4,7 @@ export default class Address extends React.Component {
 
     state = {
         balance: null,
-        network: null
+        network: null,
     };
 
     componentDidMount = async () => {
@@ -14,15 +14,28 @@ export default class Address extends React.Component {
 
     async getBalance() {
         const result = await this.props.web3.eth.getBalance(this.props.address.toString());
-        const balance = this.props.web3.utils.fromWei(result, "ether") + " ETH";
+        let balance = this.props.web3.utils.fromWei(result, "ether") + " ETH";
+        balance = this.roundBalance(balance);
         this.setState({ balance });
     }
 
     async getNetwork() {
         const result = await this.props.web3.eth.getChainId();
-
         const network = this.switchNetwork(result.toString());
         this.setState({ network });
+    }
+
+    roundBalance(_balance) {
+        const dotPosition = _balance.indexOf('.');
+        return _balance.slice(0, dotPosition + 4);
+    }
+
+    shortenAddress(_address) {
+        if (_address) {
+            const beginning = _address.substr(0, 7);
+            const ending = _address.substr(35, 5);
+            return beginning + '...' + ending;
+        }
     }
 
     switchNetwork(networkId) {
@@ -42,13 +55,19 @@ export default class Address extends React.Component {
 
     render(){
         return(
-            <div className='header'>
-                <p>Your address : </p>
-                {this.props.address}
-                <p>Your balance : </p>
-                {this.state.balance}
-                <p>Network : </p>
-                {this.state.network}
+            <div id='addressBlock'>
+                <div id='addressBox'>
+                    <span id='balance'>
+                        {this.state.balance}
+                    </span>
+                    <span id='address'>
+                        {this.shortenAddress(this.props.address.toString())}
+                    </span>
+                </div>
+                <div id='networkBox'>
+                    {this.state.network}
+                </div>
+
             </div>
         )
     }

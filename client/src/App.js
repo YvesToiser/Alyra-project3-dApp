@@ -24,7 +24,7 @@ class App extends Component {
         winningProposal: null
     };
 
-    OWNER_ADDRESS = '0x3c99C4BE3a49e13114f8D2062D5BBE3ee1E76623';
+    OWNER_ADDRESS = '0x00adF40C31239299e5ce1196a89499E6e4e4850c';
     CONTRACT_GENESIS_BLOCK = 0; // In the case of localhost blockchain => 0.
 
     componentDidMount = async () => {

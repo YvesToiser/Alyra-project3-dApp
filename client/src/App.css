@@ -139,6 +139,7 @@ button.wfButton:hover {
     height: 74px;
     line-height: 20px;
     width: 180px;
+    cursor: pointer;
 }
 
 #container {

@@ -31,7 +31,11 @@ This is the third project from the Alyra training for blockchain developer.
 ### dApp 
  - https://yvestoiser.github.io/Alyra-project3-dApp/
 ### Video Demo
- - https://
+Full length video (14 minutes) :
+ - https://www.youtube.com/watch?v=53ZeS4y3iII      
+ 
+Short video (4 minutes 30) :
+ - https://www.youtube.com/watch?v=fZApgszuVso
 
 ## Tests
 ### Manual Test
